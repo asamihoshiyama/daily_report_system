@@ -35,7 +35,6 @@ public class EmployeesNewServlet extends HttpServlet {
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/new.jsp");
         rd.forward(request, response);
-
     }
 
 }
