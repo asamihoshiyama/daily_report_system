@@ -37,10 +37,35 @@
                         </tr>
                     </tbody>
                 </table>
+                <br>
 
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
+                    <p><img class="like" src="${pageContext.request.contextPath}/img/heart_white.jpg" width="30" height="30">
+                        ${likes_count}</p>
                     <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>
                 </c:if>
+
+                <c:if test="${sessionScope.login_employee.id != report.employee.id}">
+                    <c:choose>
+                        <c:when test="${like == null}" > <!-- レコードが存在しないとき -->
+                            <form method="POST" action="<c:url value='/likes/create?id=${report.id}' />">
+                                <p><input type="image" class="like" src="${pageContext.request.contextPath}/img/heart_white.jpg" width="30" height="30" alt="いいね!">
+                                    ${likes_count}</p>
+                                <input type="hidden" name="_token" value="${_token}">
+
+                            </form>
+                        </c:when>
+                        <c:when test="${like != null}" > <!-- レコードが存在するとき -->
+                            <form method="POST" action="<c:url value='/likes/destroy?id=${report.id}'/>">
+                                <p><input type="image" class="like" src="${pageContext.request.contextPath}/img/heart_red.jpg" width="30" height="30" alt="取り消し">
+                                    ${likes_count}</p>
+                                <input type="hidden" name="_token" value="${_token}">
+                                <input type="hidden" name="like_id" value="${like.id}">
+                            </form>
+                        </c:when>
+                    </c:choose>
+                </c:if>
+
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>
